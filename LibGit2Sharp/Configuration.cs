@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using LibGit2Sharp.Core;
 using LibGit2Sharp.Core.Handles;
 
@@ -44,7 +45,7 @@ namespace LibGit2Sharp
             globalConfigPath = globalConfigurationFileLocation ?? Proxy.git_config_find_global();
             xdgConfigPath = xdgConfigurationFileLocation ?? Proxy.git_config_find_xdg();
             systemConfigPath = systemConfigurationFileLocation ?? Proxy.git_config_find_system();
-            programDataConfigPath = Proxy.git_config_find_programdata();
+            programDataConfigPath = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Proxy.git_config_find_programdata() : null;
 
             Init(repository);
         }
